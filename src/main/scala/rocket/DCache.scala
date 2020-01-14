@@ -519,7 +519,7 @@ class DCacheModule(outer: DCache) extends HellaCacheModule(outer) {
   }
 
   // grant
-  val (d_first, d_last, d_done, d_address_inc) = edge.addr_inc(tl_out.d)
+  val (d_first, d_last, _, d_address_inc) = edge.addr_inc(tl_out.d)
   val (d_opc, grantIsUncached, grantIsUncachedData) = {
     val uncachedGrantOpcodesSansData = Seq(AccessAck, HintAck)
     val uncachedGrantOpcodesWithData = Seq(AccessAckData)
@@ -613,7 +613,7 @@ class DCacheModule(outer: DCache) extends HellaCacheModule(outer) {
   // ignore backpressure from metaArb, which can only be caused by tag ECC
   // errors on hit-under-miss.  failing to write the new tag will leave the
   // line invalid, so we'll simply request the line again later.
-  metaArb.io.in(3).valid := grantIsCached && d_done && !tl_out.d.bits.denied
+  metaArb.io.in(3).valid := grantIsCached && tl_out.d.valid && !tl_out.d.bits.denied
   metaArb.io.in(3).bits.write := true
   metaArb.io.in(3).bits.way_en := s2_victim_way
   metaArb.io.in(3).bits.idx := s2_vaddr(idxMSB, idxLSB)
@@ -904,7 +904,7 @@ class DCacheModule(outer: DCache) extends HellaCacheModule(outer) {
   // performance events
   io.cpu.perf.acquire := edge.done(tl_out_a)
   io.cpu.perf.release := edge.done(tl_out_c)
-  io.cpu.perf.grant := d_done
+  io.cpu.perf.grant := tl_out.d.valid && d_last
   io.cpu.perf.tlbMiss := io.ptw.req.fire()
   io.cpu.perf.storeBufferEmptyAfterLoad := !(
     (s1_valid && s1_write) ||
