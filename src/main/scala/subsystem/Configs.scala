@@ -70,8 +70,8 @@ class WithNBigCoresWithPMPs(n: Int, nPMPs: Int) extends Config((site, here, up) 
       core   = RocketCoreParams(mulDiv = Some(MulDivParams(
         mulUnroll = 8,
         mulEarlyOut = true,
-        divEarlyOut = true,
-        nPMPs = nPMPs))),
+        divEarlyOut = true)),
+        nPMPs = nPMPs),
       dcache = Some(DCacheParams(
         rowBits = site(SystemBusKey).beatBits,
         nMSHRs = 0,
