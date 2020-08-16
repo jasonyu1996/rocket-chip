@@ -23,6 +23,9 @@ class BaseConfig extends Config(
 )
 
 class DefaultConfig extends Config(new WithNBigCoresWithPMPs(1, 8) ++ new BaseConfig)
+class DefaultConfig16PMP extends Config(new WithNBigCoresWithPMPs(1, 16) ++ new BaseConfig)
+class DefaultConfig32PMP extends Config(new WithNBigCoresWithPMPs(1, 32) ++ new BaseConfig)
+class DefaultConfig64PMP extends Config(new WithNBigCoresWithPMPs(1, 64) ++ new BaseConfig)
 
 class DefaultBufferlessConfig extends Config(new WithBufferlessBroadcastHub ++ new DefaultConfig)
 class DefaultSmallConfig extends Config(new WithNSmallCores(1) ++ new BaseConfig)
