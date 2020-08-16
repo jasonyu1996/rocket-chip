@@ -151,7 +151,7 @@ object CSR
   val nHPM = nCtr - firstHPM
   val hpmWidth = 40
 
-  val maxPMPs = 16
+  val maxPMPs = 64
 }
 
 class PerfCounterIO(implicit p: Parameters) extends CoreBundle
